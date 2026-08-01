@@ -215,7 +215,7 @@ Both pipelines call the Groq chat completions API independently. Either pipeline
 
 ## Author
 
-* **Name:** Hafiz Muhammad Faizan
-* **Email:** thehmfpk@gmail.com
-* **Website:** www.hafizmfaizan.site
-* **LinkedIn:** linkedin.com/in/hafizmfaizan
+**Name:** Hafiz Muhammad Faizan
+**Email:** thehmfpk@gmail.com
+**Website:** www.hafizmfaizan.site
+**LinkedIn:** https://www.linkedin.com/in/hafizmfaizan/
