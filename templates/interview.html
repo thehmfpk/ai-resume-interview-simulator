@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Interview in progress — Round {{ round_num }}{% endblock %}
+
+{% block content %}
+<section style="padding: 30px 0 10px;">
+
+  <div class="interview-header">
+    <div>
+      <span class="eyebrow"><span class="dot"></span> {{ profile.primary_domain }} · Round {{ round_num }}</span>
+      <h2 style="margin-top:6px;">{{ "Multiple Choice Interview" if mode == "mcq" else "Question &amp; Answer Interview" | safe }}</h2>
+    </div>
+    <div style="display:flex; align-items:center; gap:18px;">
+      <div class="q-counter">Question <b id="qCurrent">1</b> / <b>{{ questions|length }}</b></div>
+      <div class="timer-ring-wrap" id="timerRing">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle class="timer-ring-bg" cx="32" cy="32" r="27"></circle>
+          <circle class="timer-ring-fg" id="timerCircle" cx="32" cy="32" r="27"></circle>
+        </svg>
+        <div class="timer-ring-label" id="timerLabel">{{ seconds_per_q }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div class="question-card" id="questionCard">
+    <span class="question-topic" id="questionTopic">Topic</span>
+    <div class="question-text" id="questionText">Loading question…</div>
+    <div id="answerArea"></div>
+  </div>
+
+  <div class="interview-nav">
+    <button class="btn btn-ghost btn-sm" id="prevBtn">← Previous</button>
+    <div class="dot-track" id="dotTrack"></div>
+    <button class="btn btn-primary" id="nextBtn">Next →</button>
+  </div>
+
+  <div id="submitOverlay" style="display:none; text-align:center; padding:60px 0;">
+    <div class="eyebrow"><span class="dot"></span> Evaluating your responses</div>
+    <h3 style="margin-top:14px;">Our AI evaluator is scoring your interview…</h3>
+    <p>Comparing your answers against expected responses and building your performance dashboard.</p>
+  </div>
+
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.INTERVIEW_DATA = {
+    questions: {{ questions | tojson }},
+    mode: {{ mode | tojson }},
+    secondsPerQ: {{ seconds_per_q }},
+    submitUrl: {{ url_for('submit') | tojson }}
+  };
+</script>
+<script src="{{ url_for('static', filename='js/interview.js') }}"></script>
+{% endblock %}

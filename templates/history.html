@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Interview History{% endblock %}
+
+{% block content %}
+<section style="padding: 30px 0 60px;">
+  <span class="eyebrow"><span class="dot"></span> Session history</span>
+  <h2>Your past attempts</h2>
+  <p style="max-width:560px;">Every round you complete in this browser session is logged here so you can track improvement over time.</p>
+
+  {% if history %}
+  <table class="history-table" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Domain</th>
+        <th>Round</th>
+        <th>Score</th>
+        <th>Rating</th>
+        <th>Correct / Incorrect</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for h in history|reverse %}
+      <tr>
+        <td>{{ h.timestamp }}</td>
+        <td>{{ h.domain }}</td>
+        <td>{{ h.round }}</td>
+        <td><b>{{ h.overall_score_percent }}%</b></td>
+        <td>{{ h.performance_rating }}</td>
+        <td>{{ h.correct_count }} / {{ h.incorrect_count }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <div class="icon"></div>
+    <h3>No interviews yet</h3>
+    <p>Complete an interview to see your history here.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top:10px;">Start an interview</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

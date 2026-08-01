@@ -1,0 +1,8 @@
+Flask==3.0.3
+Flask-Session==0.8.0
+python-dotenv==1.0.1
+groq==0.9.0
+pdfplumber==0.11.4
+PyPDF2==3.0.1
+reportlab==4.2.2
+Werkzeug==3.0.4

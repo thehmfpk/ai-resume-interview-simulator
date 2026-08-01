@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Your Interview Results{% endblock %}
+
+{% block content %}
+<section style="padding: 30px 0 10px;">
+
+  <div class="results-hero">
+    <div class="score-ring-wrap" id="scoreRingWrap" data-score="{{ result.overall_score_percent }}">
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <circle class="score-ring-bg" cx="100" cy="100" r="85"></circle>
+        <circle class="score-ring-fg" id="scoreRingFg" cx="100" cy="100" r="85"></circle>
+      </svg>
+      <div class="score-ring-label">
+        <div class="pct">{{ result.overall_score_percent }}%</div>
+        <div class="pct-sub">Overall Score</div>
+      </div>
+    </div>
+    <div>
+      <div class="rating-badge">{{ result.performance_rating }}</div>
+      <h2>{{ profile.candidate_name }}'s Interview Report</h2>
+      <p>{{ result.summary_feedback }}</p>
+      <p style="opacity:.75; font-size:.82rem;">{{ result.timestamp }} · Round {{ result.round }} · {{ profile.primary_domain }} · {{ "MCQ" if result.mode == "mcq" else "Question & Answer" }} format</p>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card correct">
+      <div class="stat-icon"></div>
+      <div class="stat-num">{{ result.correct_count }} / {{ result.questions|length }}</div>
+      <div class="stat-label">Correct Answers</div>
+    </div>
+    <div class="stat-card incorrect">
+      <div class="stat-icon"></div>
+      <div class="stat-num">{{ result.incorrect_count }} / {{ result.questions|length }}</div>
+      <div class="stat-label">Incorrect Answers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"></div>
+      <div class="stat-num">{{ result.overall_score_percent }}%</div>
+      <div class="stat-label">Percentage Obtained</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"></div>
+      <div class="stat-num">{{ result.performance_rating }}</div>
+      <div class="stat-label">Performance Rating</div>
+    </div>
+  </div>
+
+  <div class="panel-grid">
+    <div class="panel strengths">
+      <h3>Strengths</h3>
+      <ul>{% for s in result.strengths %}<li>{{ s }}</li>{% endfor %}</ul>
+    </div>
+    <div class="panel weaknesses">
+      <h3>Weaknesses</h3>
+      <ul>{% for w in result.weaknesses %}<li>{{ w }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+
+  <div class="panel recommendations" style="margin-bottom:26px;">
+    <h3>AI Recommendations</h3>
+    <ul>{% for r in result.recommendations %}<li>{{ r }}</li>{% endfor %}</ul>
+  </div>
+
+  <h3 style="margin-bottom:14px;">Question-by-Question Breakdown</h3>
+  {% set per_question = {} %}
+  {% for pq in result.per_question %}{% set _ = per_question.update({pq.id: pq}) %}{% endfor %}
+  {% for q in result.questions %}
+    {% set pq = per_question.get(q.id, {}) %}
+    <div class="breakdown-item">
+      <div class="breakdown-head">
+        <div class="breakdown-q">Q{{ q.id }}. {{ q.question }}</div>
+        <span class="badge {{ 'correct' if pq.get('is_correct') else 'incorrect' }}">
+          {{ 'Correct' if pq.get('is_correct') else 'Incorrect' }} · {{ pq.get('score', '-') }}/10
+        </span>
+      </div>
+      <div class="breakdown-answer"><b>Your answer:</b>
+        {{ result.answers.get(q.id|string, "") or "No answer given" }}
+      </div>
+      {% if result.mode == "mcq" %}
+        <div class="breakdown-answer"><b>Correct option:</b> {{ q.correct_answer }} — {{ q.options.get(q.correct_answer, "") }}</div>
+      {% else %}
+        <div class="breakdown-answer"><b>Expected answer:</b> {{ q.expected_answer }}</div>
+      {% endif %}
+      <div class="breakdown-feedback">{{ pq.get('feedback', '') }}</div>
+    </div>
+  {% endfor %}
+
+  <div class="action-row">
+    <form action="{{ url_for('generate_more') }}" method="post" style="display:inline;">
+      <button type="submit" class="btn btn-primary">Generate 10 More Questions</button>
+    </form>
+    <a href="{{ url_for('download_report') }}" class="btn btn-secondary">⬇ Download PDF Report</a>
+    <a href="{{ url_for('history') }}" class="btn btn-ghost">View History</a>
+    <a href="{{ url_for('new_interview') }}" class="btn btn-ghost">+ Start New Interview</a>
+  </div>
+
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    const wrap = document.getElementById("scoreRingWrap");
+    const fg = document.getElementById("scoreRingFg");
+    const score = parseFloat(wrap.dataset.score) || 0;
+    const r = 85;
+    const circumference = 2 * Math.PI * r;
+    fg.style.strokeDasharray = `${circumference} ${circumference}`;
+    fg.style.strokeDashoffset = circumference * (1 - score / 100);
+    // color by band
+    fg.style.stroke = score >= 75 ? "#ffffff" : score >= 50 ? "#f4d35e" : "#f2a154";
+  })();
+</script>
+{% endblock %}

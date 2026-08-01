@@ -1,0 +1,21 @@
+e# Environments
+venv/
+env/
+.venv/
+
+# Secrets — never commit your real key
+.env
+
+# Server-side session storage (local files, not meant for git)
+.flask_session/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# OS / editor junk
+.DS_Store
+.vscode/
+*.log

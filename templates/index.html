@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}AI Interview Simulator - Practice with your own resume{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div>
+    <span class="eyebrow"><span class="dot"></span> AI powered · Dual LLM pipeline</span>
+    <h1>Interview practice that reads <span class="accent">your actual resume</span>, not a generic question bank.</h1>
+    <p class="hero-lead">
+      Upload your resume and our AI detects your domain, skills and projects, then builds
+      10 personalised questions around exactly what you've done - and scores your answers
+      like a real interviewer would.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">10</div><div class="label">Custom Questions</div></div>
+      <div class="hero-stat"><div class="num">2</div><div class="label">Independent AI Models</div></div>
+      <div class="hero-stat"><div class="num">100%</div><div class="label">Resume-Grounded</div></div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-step" data-step="1"><h4>Upload your resume</h4><p>Drop in a PDF - no forms to fill out.</p></div>
+      <div class="timeline-step" data-step="2"><h4>We extract the text</h4><p>pdfplumber cleans and structures the raw content.</p></div>
+      <div class="timeline-step" data-step="3"><h4>AI detects your domain</h4><p>Skills, projects and technologies are identified automatically.</p></div>
+      <div class="timeline-step" data-step="4"><h4>10 questions are generated</h4><p>Grounded only in what's actually on your resume.</p></div>
+      <div class="timeline-step" data-step="5"><h4>You attempt the interview</h4><p>Timed, with a live progress bar and question counter.</p></div>
+      <div class="timeline-step" data-step="6"><h4>AI evaluates your answers</h4><p>A second model scores each response and explains why.</p></div>
+      <div class="timeline-step" data-step="7"><h4>Get your performance dashboard</h4><p>Strengths, weaknesses and concrete recommendations.</p></div>
+      <div class="timeline-step" data-step="8"><h4>Generate 10 more</h4><p>Fresh, non-repeating questions to keep practicing.</p></div>
+    </div>
+  </div>
+
+  <div class="upload-card">
+    <h3>Start your mock interview</h3>
+    <div class="sub">PDF resumes only · processed securely, never stored long-term</div>
+
+    <form id="uploadForm" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+      <label class="dropzone" id="dropzone" for="resumeInput">
+        <div class="dz-icon">⇧</div>
+        <div class="dz-title">Click to upload or drag & drop</div>
+        <div class="dz-sub">PDF, up to 8MB</div>
+        <div class="dz-filename" id="dzFilename"></div>
+      </label>
+      <input type="file" id="resumeInput" name="resume" accept="application/pdf" required>
+
+      <div class="field-group">
+        <span class="field-label">Interview Format</span>
+        <div class="choice-row">
+          <label class="choice-pill active">
+            <input type="radio" name="mode" value="mcq" checked> Multiple Choice
+          </label>
+          <label class="choice-pill">
+            <input type="radio" name="mode" value="qna"> Question &amp; Answer
+          </label>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <span class="field-label">Difficulty</span>
+        <div class="choice-row">
+          <label class="choice-pill active">
+            <input type="radio" name="difficulty" value="Adaptive" checked> Adaptive
+          </label>
+          <label class="choice-pill">
+            <input type="radio" name="difficulty" value="Easy"> Easy
+          </label>
+          <label class="choice-pill">
+            <input type="radio" name="difficulty" value="Medium"> Medium
+          </label>
+          <label class="choice-pill">
+            <input type="radio" name="difficulty" value="Hard"> Hard
+          </label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" id="startBtn" style="margin-top:26px;">
+        Analyze Resume &amp; Start Interview
+      </button>
+      <p style="font-size:.78rem;text-align:center;color:var(--gray-500);margin-top:12px;">
+        Usually takes 10 to 20 seconds while the AI reads your resume.
+      </p>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
