@@ -2,8 +2,6 @@
 
 An AI-powered interview simulator that reads an uploaded resume, detects the candidate's domain, skills, and projects, generates ten personalized interview questions using Groq large language models, runs a timed mock interview, and evaluates the candidate's answers through an independent AI evaluation pipeline. The result is a full performance dashboard with scores, strengths, weaknesses, and actionable recommendations.
 
-Built for the TEEROP (SMC-PRIVATE) LIMITED AI and Machine Learning Internship Program, Task 03.
-
 ---
 
 ## Table of Contents
@@ -24,39 +22,28 @@ Built for the TEEROP (SMC-PRIVATE) LIMITED AI and Machine Learning Internship Pr
 
 ## Screenshots
 
-### Landing Page
+### Landing Page - Resume Upload and Configuration
 
-The landing page introduces the application, outlines the eight-step workflow, and lets the candidate upload a resume and choose an interview format and difficulty level.
+The landing page introduces the application, outlines the eight-step workflow, and lets the candidate upload a resume and choose an interview format and difficulty level. The candidate uploads a PDF resume, selects between Multiple Choice or Question and Answer format, and picks a difficulty level before starting the interview.
 
 ![Landing page](static/img/m1.png)
 
-### Resume Upload and Configuration
+### Interview in Progress - Multiple Choice Mode and Question Answer Mode
 
-The candidate uploads a PDF resume, selects between Multiple Choice or Question and Answer format, and picks a difficulty level before starting the interview.
+The interview screen shows a live progress bar, a question counter, a per-question countdown timer, and the current question with four selectable options. In Question and Answer format, the candidate types a free-text response for each question, evaluated later against an AI-generated expected answer.
 
 ![Resume upload](static/img/m2.png)
 
-### Interview in Progress - Multiple Choice Mode
-
-The interview screen shows a live progress bar, a question counter, a per-question countdown timer, and the current question with four selectable options.
-
 ![Multiple choice interview](static/img/m3.png)
 
-### Interview in Progress - Question and Answer Mode
-
-In Question and Answer format, the candidate types a free-text response for each question, evaluated later against an AI-generated expected answer.
-
-![Question and answer interview](static/img/m4.png)
 
 ### Performance Dashboard
 
 After submission, the AI evaluator produces an overall score, a performance rating, correct and incorrect counts, strengths, weaknesses, and personalized recommendations.
 
+![Question and answer interview](static/img/m4.png)
+
 ![Performance dashboard](static/img/m5.png)
-
-### Question Breakdown, History, and Dark Mode
-
-Every question is broken down individually with the candidate's answer, the correct or expected answer, and specific feedback. Past attempts are tracked in the history page, and the entire interface supports a dark theme.
 
 ![Question breakdown and dark mode](static/img/m6.png)
 
@@ -127,7 +114,7 @@ interview-simulator/
     groq_service.py           Groq API pipelines: question generation and evaluation
     resume_parser.py          PDF text extraction and cleaning
     requirements.txt
-    .env.example              Copy to .env and add your Groq API key
+    .env                     Copy to .env and add your Groq API key
     .gitignore
     sample_resume/
         sample_resume.pdf     Sample resume for testing
@@ -182,7 +169,7 @@ Requirements: Python 3.13, a free Groq API key from https://console.groq.com/key
 
 4. Configure your Groq API key.
 
-   Copy `.env.example` to a new file named `.env` and set your key:
+   Make `.env` and set your key:
 
    ```
    GROQ_API_KEY=your_real_groq_api_key
@@ -226,6 +213,9 @@ Both pipelines call the Groq chat completions API independently. Either pipeline
 - Session data, including resume text, questions, and results, is stored server-side in a `.flask_session` directory. This directory is excluded from version control.
 - The `.env` file containing the real API key is excluded from version control through `.gitignore` and should never be committed.
 
-## License
+## Author
 
-This project was developed as part of the TEEROP (SMC-PRIVATE) LIMITED AI and Machine Learning Internship Program and is intended for educational and evaluation purposes.
+* **Name:** Hafiz Muhammad Faizan
+* **Email:** thehmfpk@gmail.com
+* **Website:** www.hafizmfaizan.site
+* **LinkedIn:** linkedin.com/in/hafizmfaizan
